@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/* Nudge — Design System */
+
+@theme inline {
+  --color-background: #f7f7f5;
+  --color-foreground: #1a1a1a;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f0f0ec;
+  --color-border: #e8e8e4;
+  --color-border-hover: #d0d0ca;
+  --color-muted: #7a7a72;
+  --color-accent: #6B9FE8;
+  --color-accent-hover: #5a8dd6;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-display: 'Comfortaa', system-ui, sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* Display headings — Comfortaa */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Comfortaa', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  color: var(--color-foreground);
+  letter-spacing: -0.01em;
+}
+
+/* Focus ring — visible for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-offset: 1px;
+}
+
+/* iOS Safari zoom prevention */
+@media (max-width: 640px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* ─── Panel ──────────────────────────────────────────────────────── */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+/* ─── Nudge-style inputs ─────────────────────────────────────────── */
+/* Applied specifically to login and key auth forms via .nudge-input class */
+.nudge-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 1.25rem;
+  background: white;
+  border: none;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 1rem;
+  color: #374151;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 0.08), 0 1px 3px 0 rgb(0 0 0 / 0.06);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.nudge-input::placeholder {
+  color: #a0a0a0;
+}
+
+.nudge-input:focus {
+  box-shadow: 0 4px 16px 0 rgb(107 159 232 / 0.18), 0 1px 3px 0 rgb(0 0 0 / 0.06);
+}
+
+/* ─── Dashboard inputs (clean, compact, practical) ──────────────── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+input[type="number"],
+textarea,
+select {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--color-foreground);
+  -webkit-tap-highlight-color: transparent;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="search"]::placeholder,
+input[type="url"]::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+
+textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+/* ─── Nudge primary button ───────────────────────────────────────── */
+.btn-nudge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #6B9FE8;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px 0 rgb(107 159 232 / 0.35);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-nudge:hover {
+  background: #5a8dd6;
+  box-shadow: 0 6px 20px 0 rgb(107 159 232 / 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-nudge:active {
+  transform: translateY(0);
+}
+
+/* ─── Compat aliases ─────────────────────────────────────────────── */
+.glass,
+.glass-strong {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.gradient-mesh {
+  background: none;
+}
+
+.animate-fade-in,
+.animate-slide-in,
+.animate-pulse-glow,
+.stagger > * {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
