@@ -56,6 +56,14 @@ export const authConfig = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Allow custom iOS app scheme so ASWebAuthenticationSession can intercept
+      if (url.startsWith("nudge://")) return url;
+      // Default NextAuth behaviour
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
   events: {
     async createUser({ user }) {
