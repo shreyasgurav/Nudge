@@ -70,15 +70,24 @@ async function sendCustomMagicLinkEmail(email: string, url: string, provider: an
       html,
     });
   } else {
-    // Resend
-    const { Resend } = await import("resend");
-    const resend = new Resend(provider.apiKey);
-    await resend.emails.send({
-      from: provider.from,
-      to: email,
-      subject: `Sign in to Nudge`,
-      html,
+    // Resend - use fetch API directly since we're in a server context
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${provider.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: provider.from,
+        to: email,
+        subject: `Sign in to Nudge`,
+        html,
+      }),
     });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to send email: ${response.statusText}`);
+    }
   }
 }
 
