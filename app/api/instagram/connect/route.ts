@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { canManageWorkspace, getCurrentWorkspaceContext } from "@/lib/workspace-access";
 import { getBaseUrl, getMissingInstagramOAuthEnv } from "@/lib/env";
 import { createOAuthState, getAuthorizationUrl } from "@/lib/meta/oauth";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const context = await getCurrentWorkspaceContext();
   if (!context) {
     return NextResponse.redirect(`${getBaseUrl()}/login`);
@@ -24,8 +24,11 @@ export async function GET() {
     );
   }
 
+  // Check if request is from mobile app
+  const mobileApp = request.nextUrl.searchParams.get("mobileApp") === "true";
+
   const redirectUri = `${getBaseUrl()}/api/instagram/callback`;
-  const state = createOAuthState(context.workspaceId);
+  const state = createOAuthState(context.workspaceId, mobileApp);
 
   return NextResponse.redirect(getAuthorizationUrl(redirectUri, state));
 }

@@ -104,7 +104,12 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.redirect(`${baseUrl}/dashboard?connected=true`);
+    // Check if request came from iOS app (via state parameter)
+    const redirectUrl = state.mobileApp 
+      ? `nudge://instagram/callback?connected=true&account=${userInfo.username}`
+      : `${baseUrl}/dashboard?connected=true`;
+    
+    return NextResponse.redirect(redirectUrl);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("[Instagram Callback] Error:", err);
