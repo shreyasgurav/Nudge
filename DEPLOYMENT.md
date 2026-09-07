@@ -4,6 +4,7 @@
 - Repository: https://github.com/shreyasgurav/Nudge
 - Branch: main
 - Status: ✅ Pushed successfully
+- Project: Nudge - Instagram DM Automation Platform
 
 ---
 
