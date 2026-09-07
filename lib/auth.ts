@@ -16,10 +16,39 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    // Runs before the magic link is sent, so a blocked address never receives
-    // one, and again when the link is verified.
-    async signIn({ user }) {
-      return isEmailAllowedToSignIn(user?.email);
+    async signIn({ user, account }) {
+      // Check if email is allowed
+      if (!isEmailAllowedToSignIn(user?.email)) {
+        return false;
+      }
+      
+      // Allow account linking for OAuth providers
+      if (account?.provider === "google") {
+        // Check if user exists with this email
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email! },
+          include: { accounts: true },
+        });
+        
+        if (existingUser && !existingUser.accounts.some(a => a.provider === "google")) {
+          // Link Google account to existing user
+          await prisma.account.create({
+            data: {
+              userId: existingUser.id,
+              type: account.type,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              access_token: account.access_token,
+              expires_at: account.expires_at,
+              token_type: account.token_type,
+              scope: account.scope,
+              id_token: account.id_token,
+            },
+          });
+        }
+      }
+      
+      return true;
     },
     async session({ session, user }) {
       if (session.user) {
